@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">R+</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Bine ati venit la R+!</string>
+    <string name="mesaj">Catre al doilea Ecran</string>
+    <string name="mesaj2">Al doilea Ecran</string>
+    <string name="buton_sms">Deschide aplicatia de SMS</string>
+    <string name="buton_geo">Deschide aplicatia de Maps</string>
+	<string name="buton_contact">Primeste Contact</string>
+	
+</resources>
