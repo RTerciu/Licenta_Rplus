@@ -26,8 +26,10 @@ public class MainActivity extends Activity {
     	}
        else if(actiune.equals("rplus.app.action.LOGIN"))
 		       {
-		    	   
+    	   			
 		    	   Toast.makeText(getApplicationContext(), "de la actiunea de RPLUS", Toast.LENGTH_SHORT).show(); 
+		    	   setResult(Activity.RESULT_OK, cerere);
+		    	   finish();
 		       }
         
        Button button = (Button) findViewById(R.id.button1);

@@ -25,13 +25,12 @@ public class MainActivity extends ActionBarActivity {
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
               
-               Toast.makeText(getApplicationContext(), "button apasat",Toast.LENGTH_SHORT).show();
-               Intent intent=new Intent();
+               //Toast.makeText(getApplicationContext(), "button apasat",Toast.LENGTH_SHORT).show();
+               /*Intent intent=new Intent();
                intent.setAction("rplus.app.action.LOGIN");
-               startActivity(intent);
-               //getContact();
-            /*  Intent i=new Intent(getApplicationContext(),Activity2.class);
-              startActivity(i);*/
+               startActivity(intent);*/
+               getLogin();
+            
             }
         });	
 		
@@ -42,9 +41,9 @@ public class MainActivity extends ActionBarActivity {
 	
 	
 	
-    private void getContact() {
+    private void getLogin() {
         // Create an intent to "pick" a contact, as defined by the content provider URI
-        Intent intent = new Intent(Intent.ACTION_PICK, Contacts.CONTENT_URI);
+        Intent intent = new Intent("rplus.app.action.LOGIN");
         startActivityForResult(intent, 2506);
     }
 
@@ -53,15 +52,15 @@ public class MainActivity extends ActionBarActivity {
         // If the request went well (OK) and the request was PICK_CONTACT_REQUEST
         if (resultCode == Activity.RESULT_OK && requestCode == 2506) {
             // Perform a query to the contact's content provider for the contact's name
-            Cursor cursor = getContentResolver().query(data.getData(),
+           /* Cursor cursor = getContentResolver().query(data.getData(),
             new String[] {Contacts.DISPLAY_NAME}, null, null, null);
             if (cursor.moveToFirst()) { // True if the cursor is not empty
                 int columnIndex = cursor.getColumnIndex(Contacts.DISPLAY_NAME);
                 String name = cursor.getString(columnIndex);
-               
+               */
                 
-                Toast.makeText(getApplicationContext(), name, Toast.LENGTH_SHORT).show();
-            }
+                Toast.makeText(getApplicationContext(), "Am primit raspuns inapoi!", Toast.LENGTH_SHORT).show();
+            //}
         }
     }
 
