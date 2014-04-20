@@ -23,15 +23,15 @@
 		<nav class="navbar navbar-default" role="navigation">
 			<div class="container-fluid">
 				<div class="navbar-header">
-					<a href="{{URL::to('/')}}" class="navbar-brand">Platform Educationala</a>
+					<a href="{{URL::to('/')}}" class="navbar-brand">R+ Autentificare</a>
 				</div>
 				<ul class="nav navbar-nav">
 					<li>
-						<a href="{{URL::to('/documents')}}" class="navbar-brand">Documente</a>
+						<a href="{{URL::to('/profile')}}" class="navbar-brand">Profil</a>
 					</li>
 					
 					<li>
-						<a href="{{URL::to('/jobs')}}" class="navbar-brand">Joburi</a>
+						<a href="{{URL::to('/apps')}}" class="navbar-brand">Apps</a>
 					</li>
 					
 					<li>
@@ -47,7 +47,7 @@
 
 							<ul class="dropdown-menu">
 								<li>
-									<a href="{{URL::to('/users/'.Auth::user()->username)}}">Profile</a>
+									Pe cat mai curand!
 								</li>
 								<li class="divider"></li>
 								<li>
@@ -66,8 +66,9 @@
 				</ul>
 			</div>
 		</nav>
-		
+	<div class="continut">	
 		@yield('content')
 	</div>
+</div>
 </body>
 </html>

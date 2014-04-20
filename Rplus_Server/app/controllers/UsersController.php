@@ -37,6 +37,21 @@ class UsersController extends BaseController {
 		}
 	}
 	
+	
+	public function GetProfilePage()
+	{
+	$user=User::find(Auth::user()->id);
+	
+	return View::make('profile')->with('user',$user);
+	}
+	
+	public function GetAppsPage()
+	{
+	//$user=User::find(Auth::user()->id);
+	
+	return View::make('apps');
+	}
+	
 	public function PostSignUp()
 	{
 		$destinationPath = 'uploads/avatars/';

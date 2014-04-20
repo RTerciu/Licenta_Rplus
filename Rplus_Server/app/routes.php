@@ -42,7 +42,8 @@ Route::group(array('before' => 'auth'), function()
 
 {
 
-
+Route::get('profile','UsersController@GetProfilePage');
+Route::get('apps','UsersController@GetAppsPage');
 
 
 });

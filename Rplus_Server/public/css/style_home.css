@@ -1,90 +1,13 @@
-/*   BUTOANE DE SUS */
-
-
-#buttons
-{margin:0 auto;
-width:100%;
-height:149px;
-z-index:-1;
-}
-
-
-
-
-#b1{
-background-image:url("../img/buton_inactiv/bulina_STAND_BY_faraLiniuta_1.png");
-backgroung-size:80%;
-background-repeat:no-repeat;
-background-position:center;
-margin:auto;
-width:33%;
-float:left;
-height:100%;
-}
-
-#b2{
-background-image:url("../img/buton_inactiv/bulina_STAND_BY_faraLiniuta_2.png");
-background-repeat:no-repeat;
-background-position:center;
-margin:auto;
-width:33%;
-float:left;
-height:100%;
-}
-
-#b3{
-background-image:url("../img/buton_inactiv/bulina_STAND_BY_cuLiniuta_3.png");
-background-repeat:no-repeat;
-background-position:center;
-margin:auto;
-width:33%;
-float:left;
-height:100%;
-}
-
-
-#b1:hover{background-image:url("../img/buton_hover/bulina_1_Hover.png");}
-#b2:hover{background-image:url("../img/buton_hover/bulina_2_Hover.png");}
-#b3:hover{background-image:url("../img/buton_hover/bulina_3_Hover.png");}
-
-
-
-
-/* PARTEA DE SUB BUTOANE */
-
-
-
-#bannere{
-background-image:url("../img/Banner_principal.jpg");
-background-repeat:no-repeat;
-margin-top:-10px;
-height:374px;
-width:100%;
-top:0px;
-left:0px;
-z-index:2;
-position: relative;
-}
-
-
-#dot{margin:0 auto;width:60px;margin-top:3.1%;}
-#dot div{display:-webkit-inline-box;width:15px;height:15px;background-color:#cad1cf;border-radius:100%;}
-
-/* LUPA de CAUTARE */
-/*
-#searchButton
+body
 {
-background-image:url("../img/lupa.png");
-background-repeat:no-repeat;
-background-position:center;
-width:30%;
-height:70%;
-margin-left:35%;
-position:relative;
-z-index:3;
-
+background-image:url('../img/pattern-9n1s.png');
 }
-#searchButton:hover{background-image:url("../img/lupa_hover.png");}
-*/
+.continut
+{
 
-
+background-color:#FFFFFF;
+-webkit-border-radius: 10px;
+-moz-border-radius: 10px;
+border-radius: 10px;
+padding:10px;
+}
