@@ -68,6 +68,11 @@
 		</nav>
 	<div class="continut">	
 		@yield('content')
+		
+	<hr>
+	<blockquote>
+	<p class="text-center"><strong>R+ </strong>, Radu Terciu <small>{{date("d-m-Y")}}</small></p>
+	</blockquote>
 	</div>
 </div>
 </body>

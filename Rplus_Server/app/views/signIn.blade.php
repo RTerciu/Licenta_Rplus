@@ -2,10 +2,10 @@
 
 @section('content')
 	<div class="page-header">
-		<h1>Sign in <small>If you signed up!</small></h1>
+		<h1>Login pe R+! <small>Daca ai un cont deja!</small></h1>
 	</div>
 	
-	{{ Form::open(array('action' => 'UsersController@PostSignIn', 'role' => 'form' ))}}
+	{{ Form::open(array('action' => 'UsersController@PostSignIn', 'role' => 'form' , 'class'=>'form-inline'))}}
 		<div class="form-group">
 		
 			@if(Session::has('login_errors'))
@@ -20,5 +20,8 @@
 			<input type="password" class="form-control" name="password" id="password" />
 		</div>
 		<input type="submit" class="btn btn-primary" name="submit" value="Sign In" />
+		<div class="form-group">
+			<label for="password"><a href="{{url('signup')}}">Sau inregistreaza-te daca nu ai facut-o deja!</a></label>
+		</div>
 	{{Form::close()}}
 @stop

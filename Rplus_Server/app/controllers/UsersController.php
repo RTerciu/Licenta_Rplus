@@ -52,6 +52,14 @@ class UsersController extends BaseController {
 	return View::make('apps');
 	}
 	
+	
+	public function UpdateUserData()
+	{
+	
+	return 'bla';
+	}
+	
+	
 	public function PostSignUp()
 	{
 		$destinationPath = 'uploads/avatars/';

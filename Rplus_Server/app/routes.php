@@ -42,6 +42,7 @@ Route::group(array('before' => 'auth'), function()
 
 {
 
+Route::post('update','UsersController@UpdateUserData');
 Route::get('profile','UsersController@GetProfilePage');
 Route::get('apps','UsersController@GetAppsPage');
 
