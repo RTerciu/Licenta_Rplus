@@ -28,6 +28,10 @@ Route::get('/signin','UsersController@ShowSignIn');
 Route::post('/signin','UsersController@PostSignIn');
 
 Route::get('/signout','UsersController@SignOut');
+Route::get('contact',function()
+{
+return View::make('contact');
+});
 
 Route::get('users',function()
 {

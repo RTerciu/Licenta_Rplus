@@ -75,6 +75,11 @@ class UsersController extends BaseController {
 			$user->password = Hash::make(Input::get('password'));
 			$user->avatar = $destinationPath.$filename;
 			$user->username = Input::get('username');
+			$user->birthday = Input::get('data_nasterii');
+			$user->oras=Input::get('oras');
+			$user->resedinta=Input::get('resedinta');
+			$user->scoala=Input::get('scoala');
+			$user->despre=Input::get('despre');
 			$user->save();
 		}
 		

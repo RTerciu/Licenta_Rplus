@@ -28,7 +28,7 @@
 					</li>
 					
 					<li>
-						<a href="#" class="navbar-brand">Contact</a>
+						<a href="{{URL::to('contact')}}" class="navbar-brand">Contact</a>
 					</li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">

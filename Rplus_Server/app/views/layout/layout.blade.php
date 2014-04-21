@@ -3,7 +3,7 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Platform</title>
+	<title>R+ Autentificare intr-un singur pas oriunde!</title>
 	
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 	<script type="text/javascript" href="{{asset('js/bootstrap.min.js')}}"></script>
@@ -35,7 +35,7 @@
 					</li>
 					
 					<li>
-						<a href="#" class="navbar-brand">Contact</a>
+					<a href="{{URL::to('contact')}}" class="navbar-brand">Contact</a>
 					</li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">

@@ -21,6 +21,16 @@
 			<label for="username">Username</label>
 			{{ Form::text('username',null,array('class'=>'form-control','id'=>'username')) }}
 		</div>
+		
+		<div class="form-group">
+			<label for="birthday">Data Nasterii</label>
+			{{ Form::input('date','birthday',null,array('class'=>'form-control','id'=>'birthday')) }}
+		</div>
+		
+		<div class="form-group">
+			<label for="oras">Orasul Natal</label>
+			{{ Form::text('oras',null,array('class'=>'form-control','id'=>'oras')) }}
+		</div>
 </div>
 <div class="col-md-6">
 		<div class="form-group">
@@ -30,6 +40,16 @@
 		<div class="form-group">
 			<label for="avatar">Avatar</label>
 			{{ Form::file('avatar',array('class'=>'form-control','id'=>'avatar')) }}
+		</div>
+		
+		<div class="form-group">
+			<label for="resedinta">Resedinta</label>
+			{{ Form::text('resedinta',null,array('class'=>'form-control','id'=>'resedinta')) }}
+		</div>
+		
+		<div class="form-group">
+			<label for="despre">Despre</label>
+			{{ Form::text('despre',null,array('class'=>'form-control','id'=>'despre')) }}
 		</div>
 		
 </div>
