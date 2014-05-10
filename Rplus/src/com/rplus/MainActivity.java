@@ -10,6 +10,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends ActionBarActivity {
@@ -58,8 +59,11 @@ public class MainActivity extends ActionBarActivity {
                 int columnIndex = cursor.getColumnIndex(Contacts.DISPLAY_NAME);
                 String name = cursor.getString(columnIndex);
                */
-                
-                Toast.makeText(getApplicationContext(), "Am primit raspuns inapoi!", Toast.LENGTH_SHORT).show();
+                String nume=data.getStringExtra("nume");
+                String token=data.getStringExtra("Rplus_token");
+                TextView t1=(TextView) findViewById(R.id.textView2);
+                t1.setText("Nume: "+nume+" cu tokenul "+token);
+                //Toast.makeText(getApplicationContext(), "Am primit raspuns inapoi!"+raspuns, Toast.LENGTH_SHORT).show();
             //}
         }
     }

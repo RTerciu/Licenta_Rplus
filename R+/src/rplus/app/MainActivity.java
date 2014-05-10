@@ -1,5 +1,7 @@
 package rplus.app;
 
+import java.util.Random;
+
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Context;
@@ -26,8 +28,12 @@ public class MainActivity extends Activity {
     	}
        else if(actiune.equals("rplus.app.action.LOGIN"))
 		       {
-    	   			
-		    	   Toast.makeText(getApplicationContext(), "de la actiunea de RPLUS", Toast.LENGTH_SHORT).show(); 
+    	   		   Random r=new Random();
+    	   		   int numar1=r.nextInt(10);
+    	   		   int numar2=r.nextInt(20)+10;
+		    	   //Toast.makeText(getApplicationContext(), "de la actiunea de RPLUS", Toast.LENGTH_SHORT).show(); 
+		    	   cerere.putExtra("nume", "Radu"+numar1);
+		    	   cerere.putExtra("Rplus_token", "token"+numar2);
 		    	   setResult(Activity.RESULT_OK, cerere);
 		    	   finish();
 		       }

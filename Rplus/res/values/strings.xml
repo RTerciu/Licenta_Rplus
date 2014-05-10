@@ -5,5 +5,12 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="buton1">Login cu R+</string>
+    <string name="text1">Informatii primite de la serviciul de autentificiare</string>
+    <string name="text_nume">Nume</string>
+    <string name="text_password">Parola</string>
+    <string name="text_button">Login Normal</string>
+    <string name="sau">SAU</string>
+    <color name="Main_background">#BC8F8F</color>
+
 
 </resources>
