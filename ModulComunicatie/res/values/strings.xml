@@ -7,5 +7,6 @@
     <string name="crypt_button">Cripteaza</string>
     <string name="crypt_text">Text Criptat</string>
     <string name="rezultat_httpGet">Rezultat HTTP Get</string>
+    <string name="conectat">Conectat la internet?</string>
 
 </resources>
