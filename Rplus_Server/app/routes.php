@@ -50,5 +50,10 @@ Route::post('update','UsersController@UpdateUserData');
 Route::get('profile','UsersController@GetProfilePage');
 Route::get('apps','UsersController@GetAppsPage');
 
+//pentru Developerii care doresc sa creeze noi aplicatii
+
+Route::get('new/app','AppsController@NewApp');
+Route::post('new/app','AppsController@CreateNewApp');
+
 
 });

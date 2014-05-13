@@ -31,7 +31,11 @@
 					</li>
 					
 					<li>
-						<a href="{{URL::to('/apps')}}" class="navbar-brand">Apps</a>
+						<a href="{{URL::to('/apps')}}" class="navbar-brand">MyUsedApps</a>
+					</li>
+					
+					<li>
+						<a href="{{URL::to('/new/app')}}" class="navbar-brand">MyCreatedApps</a>
 					</li>
 					
 					<li>
