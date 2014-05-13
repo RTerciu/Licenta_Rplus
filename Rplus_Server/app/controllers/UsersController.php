@@ -49,9 +49,9 @@ class UsersController extends BaseController {
 	
 	public function GetAppsPage()
 	{
-	//$user=User::find(Auth::user()->id);
-	
-	return View::make('apps');
+	$userLogged=Auth::user()->id;
+	$userapps=UserApp::where('userID',$userLogged)->get();
+	return View::make('apps')->with('userapps',$userapps);
 	}
 	
 	
@@ -114,12 +114,21 @@ class UsersController extends BaseController {
 	$token_string=$user->initialToken.$data->year.$luna.$data->day.$data->hour;
 	
 	//Token de testat pentru radurt25@gmail.com a5ccbe561062aa83611ea109c2935dc1
-	
+	echo md5($token_string);
 	//Daca token-ul nu este egal cu cel primit de la aplicatie , atunci returnam eroare
 	if($userToken!==md5($token_string))
 		return json_encode(array('eroare'=>'Nu esti autorizat sa primesti aceste date sau a intervenit o eroare'));
 	
-	
+	$userAppNr=UserApp::where('userID',$user->_id)->where('appID',$app->_id)->count();
+	if(!$userAppNr)
+		$userapp=new UserApp;
+	else
+		$userapp=UserApp::where('userID',$user->_id)->where('appID',$app->_id)->first();
+		
+	$userapp->userID=$user->_id;
+	$userapp->appID=$app->_id;
+	$userapp->appName=$app->nume;
+	$userapp->save();
 	
 	return $user;
 	}
