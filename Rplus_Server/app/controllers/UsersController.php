@@ -1,5 +1,7 @@
 <?php
 
+use Carbon\Carbon;
+
 class UsersController extends BaseController {
 
 	public function ShowSignUp()
@@ -80,10 +82,47 @@ class UsersController extends BaseController {
 			$user->resedinta=Input::get('resedinta');
 			$user->scoala=Input::get('scoala');
 			$user->despre=Input::get('despre');
+			$user->initialToken=md5(Input::get('password').Input::get('email'));
 			$user->save();
 		}
 		
 		return Redirect::to('/');
 	}
 
+	
+	public function GetData($userEmail,$userToken,$apiKey)
+	{
+	
+	$user=User::where('email',$userEmail)->first();
+	//verificam ca userul exista
+	if($user==null)
+		return json_encode(array('eroare'=>'Userul nu exista!'));
+	//Verificam ca aplicatia sa fie aprobata si existenta
+	$app=Application::where('appKey',$apiKey)->where('approved',true)->first();
+	
+	if($app==null)
+		return json_encode(array('eroare'=>'Aplicatia nu exista sau nu este autorizata sa primeasca date!'));
+	
+	$data=Carbon::now();
+	
+	
+	if($data->month<10)
+		$luna='0'.$data->month;
+	else 
+		$luna=$data->month;
+	//construim token-ul dependent de timp baza pe token-ul initial construit la signup
+	$token_string=$user->initialToken.$data->year.$luna.$data->day.$data->hour;
+	
+	//Token de testat pentru radurt25@gmail.com a5ccbe561062aa83611ea109c2935dc1
+	
+	//Daca token-ul nu este egal cu cel primit de la aplicatie , atunci returnam eroare
+	if($userToken!==md5($token_string))
+		return json_encode(array('eroare'=>'Nu esti autorizat sa primesti aceste date sau a intervenit o eroare'));
+	
+	
+	
+	return $user;
+	}
+	
+	
 }

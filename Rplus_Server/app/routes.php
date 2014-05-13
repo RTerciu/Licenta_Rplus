@@ -33,6 +33,7 @@ Route::get('contact',function()
 return View::make('contact');
 });
 
+//de sters ruta asta
 Route::get('users',function()
 {
 $users=User::all();
@@ -40,6 +41,11 @@ $users=User::all();
 return $users;
 
 });
+
+Route::get('getData/{userEmail}/{userToken}/{apiKey}','UsersController@GetData');
+
+
+
 
 
 Route::group(array('before' => 'auth'), function()
