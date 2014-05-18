@@ -114,7 +114,7 @@ class UsersController extends BaseController {
 	$token_string=$user->initialToken.$data->year.$luna.$data->day.$data->hour;
 	
 	//Token de testat pentru radurt25@gmail.com a5ccbe561062aa83611ea109c2935dc1
-	echo md5($token_string);
+	//echo md5($token_string);
 	//Daca token-ul nu este egal cu cel primit de la aplicatie , atunci returnam eroare
 	if($userToken!==md5($token_string))
 		return json_encode(array('eroare'=>'Nu esti autorizat sa primesti aceste date sau a intervenit o eroare'));
