@@ -3,7 +3,11 @@
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/pattern"
+    android:textColor="#FFFFFF"
+   
     android:orientation="vertical"
+    
     tools:context="com.rplus.modulcomunicatie.MainActivity"
     tools:ignore="MergeRootFrame" >
 
@@ -19,15 +23,6 @@
         android:textColor="#FFF"
         android:textSize="18sp" />
 
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/textView1"
-        android:layout_marginTop="31dp"
-        android:text="@string/rezultat_httpGet" />
-
     <EditText
         android:id="@+id/editText1"
         android:layout_width="wrap_content"
@@ -36,7 +31,10 @@
         android:layout_below="@+id/textView3"
         android:layout_marginTop="22dp"
         android:ems="10"
-        android:inputType="textEmailAddress" />
+        android:hint="@string/email"
+        android:inputType="textEmailAddress"
+        android:textColor="@color/Scris"
+        android:textColorHint="@color/Alb" />
 
     <EditText
         android:id="@+id/editText2"
@@ -45,29 +43,13 @@
         android:layout_below="@+id/editText1"
         android:layout_centerHorizontal="true"
         android:ems="10"
-        android:inputType="textPassword" >
+        android:hint="@string/parola"
+        android:inputType="textPassword"
+        android:textColor="@color/Scris"
+        android:textColorHint="@color/Alb" >
 
         <requestFocus />
     </EditText>
-
-    <Button
-        android:id="@+id/button2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/editText2"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="20dp"
-        android:text="@string/buton_login" />
-
-    <Button
-        android:id="@+id/button1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/button2"
-        android:layout_alignBottom="@+id/button2"
-        android:layout_alignRight="@+id/editText2"
-        android:text="@string/crypt_button" />
 
     <TextView
         android:id="@+id/textView1"
@@ -77,15 +59,49 @@
         android:layout_below="@+id/button2"
         android:layout_marginTop="61dp"
         android:text="@string/crypt_text"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/Alb" />
+
+    <ProgressBar
+        android:id="@+id/progressBar1"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:visibility="invisible" />
 
     <Button
-        android:id="@+id/button3"
+        android:id="@+id/button2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/editText2"
+        android:layout_centerHorizontal="true"
+        android:text="@string/buton_login"
+        android:textColor="@color/Alb" />
+
+    <Button
+        android:id="@+id/button1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/button2"
         android:layout_alignRight="@+id/button2"
         android:layout_below="@+id/button2"
-        android:text="@string/remove_accounts" />
+        android:text="@string/crypt_button"
+        android:textColor="@color/Alb"
+        android:textColorHint="@color/Alb" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/textView1"
+        android:layout_alignBottom="@+id/textView1"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:text="@string/rezultat_httpGet"
+        android:textColor="@color/Alb" />
 
 </RelativeLayout>

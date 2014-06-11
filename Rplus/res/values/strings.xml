@@ -10,7 +10,7 @@
     <string name="text_password">Parola</string>
     <string name="text_button">Login Normal</string>
     <string name="sau">SAU</string>
-    <color name="Main_background">#BC8F8F</color>
+    <color name="Main_background">#3BA067</color>
 
 
 </resources>

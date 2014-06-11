@@ -14,6 +14,9 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import android.support.v7.app.ActionBarActivity;
 import android.accounts.Account;
@@ -24,6 +27,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -33,6 +37,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,6 +45,7 @@ public class MainActivity extends ActionBarActivity {
 
 	TextView RaspunsJson;
 	TextView conectat;
+	String raspunsHttpGet;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,52 +53,17 @@ public class MainActivity extends ActionBarActivity {
         
         
         //asculta Intent-urile de tip Rplus venite de la alte aplicatii
-        AscultaCereri();
+       // AscultaCereri();
         
         //butoanele fac operatiile de adaugare a unui cont
         
         Button button = (Button) findViewById(R.id.button1);
         Button button1= (Button) findViewById(R.id.button2);
-        Button button2= (Button) findViewById(R.id.button3);
+       
       
-        /*
-         * Button2 realizeaza stergerea tuturor conturilor asociate cu aplicatia Rplus
-         * de pe telefon la apasarea lui
-         * 
-         */
         
-        button2.setOnClickListener(new View.OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				
-				AccountManager mAccountManager = AccountManager.get(getApplicationContext());
-				Account[] accounts=mAccountManager.getAccountsByType("com.rplus");
-				
-				
-				   final Handler handler = new Handler (); 
-
-				    AccountManagerCallback<Boolean> callback = new AccountManagerCallback<Boolean>()
-				    {
-				        @Override
-				        public void run(AccountManagerFuture<Boolean> arg0)
-				        {
-				           // nada
-				        }
-				    };
-				
-				
-			    for (int index = 0; index < accounts.length; index++) {
-			    		String x=accounts[index].name;
-			        	mAccountManager.removeAccount(accounts[index], callback, handler);
-						Toast.makeText(getBaseContext(), "Cont "+x+" sters", Toast.LENGTH_SHORT).show();
-
-			        }
-				
-				
-			}
-		});
         
+                
         
         
         /*
@@ -104,27 +75,35 @@ public class MainActivity extends ActionBarActivity {
         button1.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 				AccountManager mAccountManager = AccountManager.get(getApplicationContext());
-				Account[] a=mAccountManager.getAccounts();
 				
-				EditText et1= (EditText) findViewById(R.id.editText1);
+				//Account[] a=mAccountManager.getAccounts();
+				Account[] a=mAccountManager.getAccountsByType("com.rplus");
+				
+				if(a.length>0)
+	        		{
+					Toast.makeText(getBaseContext(),"Ai deja un cont inregistrat!\nFoloseste Meniu->Resetare pentru a sterge contul curent!", Toast.LENGTH_LONG).show();
+	        		}
+				else
+				{
+				EditText et1= (EditText) findViewById(R.id.editText1);			
 				EditText et2= (EditText) findViewById(R.id.editText2);
+		
+              	String myString=et2.getText().toString()+et1.getText().toString();
+              	//String apiKey="$2y$10$U8WWhUfYsJbFRZcZdj.Sve.rn3MpyL4.O8CRozmehvXjcPUIanndi";
+
+            	Date d=new Date();
+            	String format = new SimpleDateFormat("yyyyMMddHH").format(d);
+            	String initialToken=md5(myString);
+            	String userToken=md5(initialToken+format);
+            	ProgressBar progressBar=(ProgressBar)findViewById(R.id.progressBar1);
+            	
+            	String[] date_cont=new String[2];
+            	date_cont[0]=et1.getText().toString();
+            	date_cont[1]=initialToken;
+            	
+               new HttpAsyncTask(progressBar,"1",date_cont).execute("http://rplus.co/checkUser/"+et1.getText().toString()+"/"+userToken);
 				
-				String names="Nume conturi: ";
-				int i; 
-				for (i = 0; i < a.length; i++) {
-				        if(a[i].type.equalsIgnoreCase("com.rplus")&&a[i].name.equals(et1.getText().toString()))
-				        	{Toast.makeText(getBaseContext(), "Esti deja autentificat!", Toast.LENGTH_LONG).show();
-				        	break;				        	
-				        	}
-				    }
-				if(i==a.length)
-					{
-					Account myAccount=new Account(et1.getText().toString(),"com.rplus");
-					mAccountManager.addAccountExplicitly(myAccount, et2.getText().toString(),null);
-					Toast.makeText(getBaseContext(), "Cont adaugat!", Toast.LENGTH_LONG).show();
-					}
-				
-				
+				}
 			}
 		});
         
@@ -145,7 +124,7 @@ public class MainActivity extends ActionBarActivity {
             	EditText et2= (EditText) findViewById(R.id.editText2);
 
               	String myString=et2.getText().toString()+et1.getText().toString();
-              	String apiKey="$2y$10$U8WWhUfYsJbFRZcZdj.Sve.rn3MpyL4.O8CRozmehvXjcPUIanndi";
+              	String apiKey="$2y$10$uzbt86lJrhS669Djzkq42uWFC4suyOvGQaL.vPx8irx7VtYo5K3nm";
               	
             	
             	
@@ -153,7 +132,7 @@ public class MainActivity extends ActionBarActivity {
             	String format = new SimpleDateFormat("yyyyMMddHH").format(d);
             	String initialToken=md5(myString);
             	String userToken=md5(initialToken+format);
-            	tv.setText(initialToken+format+" "+userToken);
+            	//tv.setText(initialToken+format+" "+userToken);
             	
             	RaspunsJson = (TextView) findViewById(R.id.textView2);
             	conectat=(TextView)findViewById(R.id.textView3);
@@ -171,9 +150,16 @@ public class MainActivity extends ActionBarActivity {
                 }
          
                 // call AsynTask to perform network operation on separate thread
-                new HttpAsyncTask().execute("http://192.168.1.10/Rplus_Server/public/getData/"+et1.getText().toString()+"/"+userToken+"/"+apiKey);
+                //raspunsHttpGet="nimic";
+            	ProgressBar progressBar=(ProgressBar)findViewById(R.id.progressBar1);
+            	RaspunsJson.setText("");
+               //new HttpAsyncTask(progressBar,"2",RaspunsJson).execute("http://rplus.co/checkApp/"+apiKey);
+               // new HttpAsyncTask(progressBar,"1",RaspunsJson).execute("http://rplus.co/checkUser/"+et1.getText().toString()+"/"+userToken);
+                new HttpAsyncTask(progressBar,"3",RaspunsJson).execute("http://rplus.co/getData/"+et1.getText().toString()+"/"+userToken+"/"+apiKey);
+
                 
-            	
+                
+                //RaspunsJson.setText(raspunsHttpGet);
             	
             	
             	
@@ -181,55 +167,16 @@ public class MainActivity extends ActionBarActivity {
         });
 
     }
-
     
-    public void AscultaCereri()
+    //de verificat ca aplicatia exista
+    public String verificaAplicatie()
     {
     	
     	
-        Intent cerere=getIntent();
-        String actiune=cerere.getAction();
-       // String tip = cerere.getType();
-        
-        if(actiune.equals(Intent.ACTION_SEND)){
-     	    Toast.makeText(getApplicationContext(), "de la actiunea de send", Toast.LENGTH_SHORT).show();           
-     	}
-        else if(actiune.equals("rplus.app.action.LOGIN"))
- 		       {
-     	   		String RequestAppId=cerere.getStringExtra("app_key");
-     	   		
-     	   		//verific la server daca aplicatia este una inregistrata
-     	   		//aici hardcodat
-     	   		if(RequestAppId.equals("1234"))
-     	   		{ Random r=new Random();
-     	   		   int numar1=r.nextInt(10);
-     	   		   int numar2=r.nextInt(20)+10;
- 		    	   //Toast.makeText(getApplicationContext(), "de la actiunea de RPLUS", Toast.LENGTH_SHORT).show();
-     	   		   cerere.putExtra("valid_app", true);
- 		    	   cerere.putExtra("nume", "Radu"+numar1);
- 		    	   cerere.putExtra("Rplus_token", "token"+numar2);
- 		    	   setResult(Activity.RESULT_OK, cerere);
- 		    	   finish();
-     	   		
-     	   		} 
-     	   		else 
-     	   		{
-     	   			//Toast.makeText(getApplicationContext(), RequestAppId, Toast.LENGTH_SHORT).show();
-     	   		
-     	   		cerere.putExtra("valid_app",false);
-     	   		cerere.putExtra("nume", "NeAutorizat");
- 		    	cerere.putExtra("Rplus_token", "NeAutorizat");
- 		    	
- 		    	setResult(Activity.RESULT_OK, cerere);
- 		    	finish();	
- 		    	
-     	   		}
-     	   		
- 		       }	
-    	
+    return "Rplus";	
     }
     
-    
+       
     public static String GET(String url){
         InputStream inputStream = null;
         String result = "";
@@ -278,18 +225,103 @@ public class MainActivity extends ActionBarActivity {
                 return false;   
     }
     private class HttpAsyncTask extends AsyncTask<String, Void, String> {
+    	
+    	private  ProgressBar pb;
+    	private int codOp;
+    	private Object ob;
+    	
+    	
+    	public HttpAsyncTask( ProgressBar p , String op , Object o)
+    	{	
+    	this.pb=p;
+    	this.codOp=Integer.parseInt(op);
+    	this.ob=o;
+
+    	}
+    	
+    	
+    	  @Override
+    	    protected void onPreExecute() {
+            pb.setVisibility(View.VISIBLE); 
+
+    	    }
+    	
         @Override
         protected String doInBackground(String... urls) {
- 
+        			
+        	
             return GET(urls[0]);
+        
+        	
         }
         // onPostExecute displays the results of the AsyncTask.
         @Override
         protected void onPostExecute(String result) {
-            Toast.makeText(getBaseContext(), "Received!", Toast.LENGTH_LONG).show();
-            RaspunsJson.setText(result);
+        	pb.setVisibility(View.INVISIBLE);
+
+        	switch(codOp)
+        	{
+        	case 1:  
+        			if(!checkErrorJson(result))
+        				{
+        				AccountManager mAccountManager = AccountManager.get(getApplicationContext());
+        				Account myAccount=new Account(((String[])ob)[0],"com.rplus");
+        				mAccountManager.addAccountExplicitly(myAccount, ((String[])ob)[1],null);     				
+        				Toast.makeText(getApplicationContext(), "Contul "+((String[])ob)[0]+" a fost verificat si adaugat cu success!",Toast.LENGTH_SHORT).show();
+        				}
+        			else
+        				Toast.makeText(getApplicationContext(), "Credentialele introduse de dumneavoastra nu sunt valide!\n Va rugam reincercati!",Toast.LENGTH_SHORT).show();
+
+        			break;
+        	case 2:
+        			((TextView) ob).append(result);
+        			break;
+        	case 3:	
+        			//JSONArray names;
+        			try {
+					JSONObject js =new JSONObject(result);
+					String output="";
+					JSONArray names=js.names();
+					for(int i=0;i<names.length();i++)
+						output+=names.getString(i)+" : "+js.getString(names.getString(i))+ "\n";
+					
+					
+					((TextView) ob).append(output);
+				   } catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				   }
+        			
+        			break;
+        	}
+        	
+        	
+        	
        }
     }
+    
+    /*
+     * Functia care primeste ca intrare un string in format json
+     * si verifica daca acesta este un mesaj de eroare
+     * */
+    public Boolean checkErrorJson(String in)
+    {
+		    try{
+		    
+		    	JSONObject js =new JSONObject(in);	
+		    	
+		    	if(js.has("eroare"))
+		    			return true;
+		    	
+		    } catch (Exception e) {
+		        // TODO Auto-generated catch block
+		        e.printStackTrace();
+		     }
+		    				
+    return false;
+    }
+    
+    
 
     public static final String md5(final String s) {
         final String MD5 = "MD5";
@@ -330,7 +362,50 @@ public class MainActivity extends ActionBarActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         if (id == R.id.action_settings) {
-            return true;
+           
+        	
+        	String url = "http://rplus.co/signup#formular_inregistrare";
+        	Intent i = new Intent(Intent.ACTION_VIEW);
+        	i.setData(Uri.parse(url));
+        	startActivity(i);
+        	
+        }
+        
+        if(id== R.id.action_settings2)
+        {
+        	
+        	/*
+             * La apasarea butonului de Resetare din
+             * meniu se realizeaza stergerea tuturor conturilor asociate cu aplicatia Rplus
+             * de pe telefon la apasarea lui
+             * 
+             */
+        	
+        	AccountManager mAccountManager = AccountManager.get(getApplicationContext());
+			Account[] accounts=mAccountManager.getAccountsByType("com.rplus");
+			
+			
+			   final Handler handler = new Handler (); 
+
+			    AccountManagerCallback<Boolean> callback = new AccountManagerCallback<Boolean>()
+			    {
+			        @Override
+			        public void run(AccountManagerFuture<Boolean> arg0)
+			        {
+			           // nada
+			        }
+			    };
+			
+			
+		    for (int index = 0; index < accounts.length; index++) {
+		    		String x=accounts[index].name;
+		        	mAccountManager.removeAccount(accounts[index], callback, handler);
+					Toast.makeText(getBaseContext(), "Cont "+x+" sters", Toast.LENGTH_SHORT).show();
+
+		        }
+			
+
+        	
         }
         return super.onOptionsItemSelected(item);
     }

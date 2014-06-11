@@ -43,28 +43,22 @@ public class MainActivity extends ActionBarActivity {
 	
 	
     private void getLogin() {
-        // Create an intent to "pick" a contact, as defined by the content provider URI
+        
         Intent intent = new Intent("rplus.app.action.LOGIN");
+        intent.putExtra("app_key", "$2y$10$U8WWhUfYsJbFRZcZdj.Sve.rn3MpyL4.O8CRozmehvXjcPUIanndi");
         startActivityForResult(intent, 2506);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        // If the request went well (OK) and the request was PICK_CONTACT_REQUEST
+        // If the request went well (OK) 
         if (resultCode == Activity.RESULT_OK && requestCode == 2506) {
-            // Perform a query to the contact's content provider for the contact's name
-           /* Cursor cursor = getContentResolver().query(data.getData(),
-            new String[] {Contacts.DISPLAY_NAME}, null, null, null);
-            if (cursor.moveToFirst()) { // True if the cursor is not empty
-                int columnIndex = cursor.getColumnIndex(Contacts.DISPLAY_NAME);
-                String name = cursor.getString(columnIndex);
-               */
+
                 String nume=data.getStringExtra("nume");
                 String token=data.getStringExtra("Rplus_token");
                 TextView t1=(TextView) findViewById(R.id.textView2);
                 t1.setText("Nume: "+nume+" cu tokenul "+token);
-                //Toast.makeText(getApplicationContext(), "Am primit raspuns inapoi!"+raspuns, Toast.LENGTH_SHORT).show();
-            //}
+
         }
     }
 
@@ -78,9 +72,7 @@ public class MainActivity extends ActionBarActivity {
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle action bar item clicks here. The action bar will
-		// automatically handle clicks on the Home/Up button, so long
-		// as you specify a parent activity in AndroidManifest.xml.
+		
 		int id = item.getItemId();
 		if (id == R.id.action_settings) {
 			return true;

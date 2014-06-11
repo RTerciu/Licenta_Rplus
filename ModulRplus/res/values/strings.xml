@@ -1,13 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
 
     <string name="app_name">ModulRplus</string>
     <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
-	<string name="crypt_button">GetAuth</string>
-    <string name="crypt_text">Text Criptat</string>
+    <string name="action_settings">Inregistrare</string>
+    <string name="action_settings2">Resetare(sterge tot)</string>
+    
+	<string name="crypt_button">Verifica Datele!</string>
+    <string name="crypt_text"> </string>
     <string name="rezultat_httpGet">Rezultat HTTP Get</string>
     <string name="conectat">Conectat la internet?</string>
     <string name="buton_login">RplusLogin</string>
     <string name="remove_accounts">StergeDateAnterioare</string>
+    <string name="parola">Password</string>
+    <string name="email">E-Mail</string>
+    <color android:id="@+id/color1" name="Alb">#ffffff</color>
+    <color android:id="@+id/color1" name="Scris">#00ffff</color>
+    <string name="waiting">Va rugam asteptati! Se incarca!</string>
 </resources>
