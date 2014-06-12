@@ -2,7 +2,7 @@
 
 @section('content')
 	<div class="page-header">
-		<h1>Inregistreaza-te acum! <small>Sa nu te mai inregistrezi de multe ori de acum incolo!</small></h1>
+		<h1 id="formular_inregistrare">Inregistreaza-te acum! <small>Sa nu te mai inregistrezi de multe ori de acum incolo!</small></h1>
 	</div>
 	
 	{{ Form::open(array('action' => 'UsersController@ShowSignUp', 'files' => true, 'role' => 'form' ,'id'=>'form_signUp' ))}}

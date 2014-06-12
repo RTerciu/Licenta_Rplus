@@ -33,5 +33,18 @@ class AppsController extends BaseController {
 	
 	}
 
+	
+	
+	public function CheckAppKey($appKey)
+	{
+	$app=Application::where('appKey',$appKey)->first();
+	
+	if($app==null)
+		return json_encode(array('eroare'=>'Aplicatia ceruta nu exista'));
+	else 
+		return json_encode(array('nume'=>$app->nume));
+	
+	}
+	
 
 }
