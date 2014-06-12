@@ -5,11 +5,18 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.security.InvalidKeyException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Random;
+
+import javax.crypto.Cipher;
+import javax.crypto.NoSuchPaddingException;
+import javax.crypto.spec.IvParameterSpec;
+import javax.crypto.spec.SecretKeySpec;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -28,6 +35,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -138,9 +146,18 @@ public class Activity2 extends ActionBarActivity {
 	        @Override
 	        protected void onPostExecute(String result) {
 	             
+	        	
+	        	
+	        	
+	        	
 	        	 i.putExtra("valid_app", true);
 		    	 i.putExtra("nume", "Raspuns");
-		    	 i.putExtra("Rplus_token", result);
+		    	 try {
+					i.putExtra("Rplus_token", decripteaza(result));
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 		    	 setResult(Activity.RESULT_OK, i);
 		    	 finish();
 		    	
@@ -149,6 +166,27 @@ public class Activity2 extends ActionBarActivity {
 	    
 	    
 	    }
+	    
+	    public static String decripteaza(String in) throws Exception
+	    {
+	    
+	    byte[] data = Base64.decode(in, Base64.DEFAULT);
+	    String ivec="1234567812345678";
+	    String key="1234567812345678";
+	    SecretKeySpec cheie = new SecretKeySpec(key.getBytes(), "AES");
+	    IvParameterSpec iv= new IvParameterSpec(ivec.getBytes());
+	    String text="";
+		//text = new String(data, "UTF-8");
+		Cipher cifru= Cipher.getInstance("AES/CBC/NOPADDING");
+		cifru.init(Cipher.DECRYPT_MODE,cheie,iv);
+		byte[] decriptat=cifru.doFinal(data);
+		return new String(decriptat);
+	    
+		
+	    
+	    }
+	    
+	    
 	    
         public static String GET(String url){
             InputStream inputStream = null;

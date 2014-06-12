@@ -4,11 +4,16 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Random;
+
+import javax.crypto.Cipher;
+import javax.crypto.spec.IvParameterSpec;
+import javax.crypto.spec.SecretKeySpec;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -31,6 +36,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Base64;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -155,7 +161,17 @@ public class MainActivity extends ActionBarActivity {
             	RaspunsJson.setText("");
                //new HttpAsyncTask(progressBar,"2",RaspunsJson).execute("http://rplus.co/checkApp/"+apiKey);
                // new HttpAsyncTask(progressBar,"1",RaspunsJson).execute("http://rplus.co/checkUser/"+et1.getText().toString()+"/"+userToken);
-                new HttpAsyncTask(progressBar,"3",RaspunsJson).execute("http://rplus.co/getData/"+et1.getText().toString()+"/"+userToken+"/"+apiKey);
+               BigInteger p=new BigInteger(256,90,new Random());
+               BigInteger g=new BigInteger(256,90,new Random());
+               BigInteger a=new BigInteger(256,new Random());
+               BigInteger A=g.modPow(a,p);
+               
+               
+               
+               
+               
+               new HttpAsyncTask(progressBar,"4",RaspunsJson).execute("http://rplus.co/test/"+p.toString()+"/"+g.toString()+"/"+A.toString()+"/"+a.toString());
+            	//new HttpAsyncTask(progressBar,"3",RaspunsJson).execute("http://rplus.co/getData/"+et1.getText().toString()+"/"+userToken+"/"+apiKey);
 
                 
                 
@@ -176,7 +192,27 @@ public class MainActivity extends ActionBarActivity {
     return "Rplus";	
     }
     
-       
+     
+    public static String decripteaza(String in) throws Exception
+    {
+    
+    byte[] data = Base64.decode(in, Base64.DEFAULT);
+    String ivec="1234567812345678";
+    String key="1234567812345678";
+    SecretKeySpec cheie = new SecretKeySpec(key.getBytes(), "AES");
+    IvParameterSpec iv= new IvParameterSpec(ivec.getBytes());
+    String text="";
+	//text = new String(data, "UTF-8");
+	Cipher cifru= Cipher.getInstance("AES/CBC/NOPADDING");
+	cifru.init(Cipher.DECRYPT_MODE,cheie,iv);
+	byte[] decriptat=cifru.doFinal(data);
+	return new String(decriptat);
+    
+	
+    
+    }
+    
+    
     public static String GET(String url){
         InputStream inputStream = null;
         String result = "";
@@ -279,19 +315,55 @@ public class MainActivity extends ActionBarActivity {
         	case 3:	
         			//JSONArray names;
         			try {
-					JSONObject js =new JSONObject(result);
+					JSONObject js =new JSONObject(decripteaza(result));
 					String output="";
 					JSONArray names=js.names();
 					for(int i=0;i<names.length();i++)
 						output+=names.getString(i)+" : "+js.getString(names.getString(i))+ "\n";
 					
 					
+					
+					
+					
 					((TextView) ob).append(output);
-				   } catch (JSONException e) {
+				   } catch ( Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				   }
         			
+        			break;
+        			
+        	case 4: 
+				JSONArray jsonArray;
+				try {
+					jsonArray = new JSONArray(result);
+
+	        		String[] strArr = new String[jsonArray.length()];
+	
+	        		for (int i = 0; i < jsonArray.length(); i++) {
+	        		    strArr[i] = jsonArray.getString(i);
+	        		}
+	        		
+	        		
+	        		BigInteger p=new BigInteger(strArr[0]);
+	        		BigInteger q=new BigInteger(strArr[1]);
+	        		BigInteger A=new BigInteger(strArr[2]);
+	        		BigInteger B=new BigInteger(strArr[3]);
+	        		BigInteger s=new BigInteger(strArr[4]);
+	        		BigInteger a=new BigInteger(strArr[5]);
+	        		
+	        		BigInteger s1=B.modPow(a, p);
+	        		
+	        		if(s1.equals(s))
+	        			Toast.makeText(getApplicationContext(), "sunt egale,Hooaray!",Toast.LENGTH_SHORT).show();
+	        		
+        			((TextView) ob).append(s+"\n"+s1);
+        			
+        			
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
         			break;
         	}
         	
