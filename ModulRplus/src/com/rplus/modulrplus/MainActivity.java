@@ -161,17 +161,20 @@ public class MainActivity extends ActionBarActivity {
             	RaspunsJson.setText("");
                //new HttpAsyncTask(progressBar,"2",RaspunsJson).execute("http://rplus.co/checkApp/"+apiKey);
                // new HttpAsyncTask(progressBar,"1",RaspunsJson).execute("http://rplus.co/checkUser/"+et1.getText().toString()+"/"+userToken);
-               BigInteger p=new BigInteger(256,90,new Random());
-               BigInteger g=new BigInteger(256,90,new Random());
-               BigInteger a=new BigInteger(256,new Random());
+               BigInteger p=new BigInteger(128,90,new Random());
+               BigInteger g=new BigInteger(128,90,new Random());
+               BigInteger a=new BigInteger(128,new Random());
                BigInteger A=g.modPow(a,p);
                
                
+               BigInteger[] bigs= new BigInteger[4];
+               bigs[0]=p;
+               bigs[1]=g;
+               bigs[2]=a;
                
                
-               
-               new HttpAsyncTask(progressBar,"4",RaspunsJson).execute("http://rplus.co/test/"+p.toString()+"/"+g.toString()+"/"+A.toString()+"/"+a.toString());
-            	//new HttpAsyncTask(progressBar,"3",RaspunsJson).execute("http://rplus.co/getData/"+et1.getText().toString()+"/"+userToken+"/"+apiKey);
+               //new HttpAsyncTask(progressBar,"4",RaspunsJson).execute("http://rplus.co/test/"+p.toString()+"/"+g.toString()+"/"+A.toString()+"/"+a.toString());
+               new HttpAsyncTask(progressBar,"3",RaspunsJson,bigs).execute("http://rplus.co/getData/"+et1.getText().toString()+"/"+userToken+"/"+apiKey+"/"+p.toString()+"/"+g.toString()+"/"+A.toString());
 
                 
                 
@@ -193,12 +196,13 @@ public class MainActivity extends ActionBarActivity {
     }
     
      
-    public static String decripteaza(String in) throws Exception
+    public static String decripteaza(String in,BigInteger s) throws Exception
     {
     
     byte[] data = Base64.decode(in, Base64.DEFAULT);
     String ivec="1234567812345678";
-    String key="1234567812345678";
+    //String key=md5("1234567812345678");
+    String key=md5(s.toString());
     SecretKeySpec cheie = new SecretKeySpec(key.getBytes(), "AES");
     IvParameterSpec iv= new IvParameterSpec(ivec.getBytes());
     String text="";
@@ -265,8 +269,9 @@ public class MainActivity extends ActionBarActivity {
     	private  ProgressBar pb;
     	private int codOp;
     	private Object ob;
-    	
-    	
+    	BigInteger a;
+    	BigInteger p;
+    	BigInteger g;
     	public HttpAsyncTask( ProgressBar p , String op , Object o)
     	{	
     	this.pb=p;
@@ -275,6 +280,16 @@ public class MainActivity extends ActionBarActivity {
 
     	}
     	
+    	public HttpAsyncTask(ProgressBar p, String op, Object o, BigInteger[] bigs)
+    	{
+        	this.pb=p;
+        	this.codOp=Integer.parseInt(op);
+        	this.ob=o;
+    		this.p=bigs[0];
+    		this.g=bigs[1];
+    		this.a=bigs[2];
+    		
+    	}
     	
     	  @Override
     	    protected void onPreExecute() {
@@ -283,9 +298,9 @@ public class MainActivity extends ActionBarActivity {
     	    }
     	
         @Override
-        protected String doInBackground(String... urls) {
-        			
+        protected String doInBackground(String ...urls) {
         	
+
             return GET(urls[0]);
         
         	
@@ -313,9 +328,26 @@ public class MainActivity extends ActionBarActivity {
         			((TextView) ob).append(result);
         			break;
         	case 3:	
-        			//JSONArray names;
-        			try {
-					JSONObject js =new JSONObject(decripteaza(result));
+        		//((TextView) ob).append(result);
+        		
+        		try {
+        			//primesc raspunsul json cu B-ul si 
+        			JSONObject raspuns=new JSONObject(result);
+        			BigInteger B=new BigInteger(raspuns.getString("B"));
+        			//Calculez cheia de sesiune
+        			BigInteger s1=B.modPow(a, p);
+        			/*
+        			 * De scos campul secret din JSON.
+        			 * md5(s1) este egal cu valoarea cu care criptez pe server
+        			 * 
+        			 *
+        			
+        			String s2=raspuns.getString("secret");
+        			((TextView) ob).append("\n\n"+md5(s1.toString())+"\n"+s2);
+        			*/
+        			
+        			
+					JSONObject js =new JSONObject(decripteaza(raspuns.getString("rezultat"),s1));
 					String output="";
 					JSONArray names=js.names();
 					for(int i=0;i<names.length();i++)
@@ -330,7 +362,7 @@ public class MainActivity extends ActionBarActivity {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				   }
-        			
+        		
         			break;
         			
         	case 4: 
@@ -392,8 +424,6 @@ public class MainActivity extends ActionBarActivity {
 		    				
     return false;
     }
-    
-    
 
     public static final String md5(final String s) {
         final String MD5 = "MD5";

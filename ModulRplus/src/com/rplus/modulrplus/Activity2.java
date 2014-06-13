@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.math.BigInteger;
 import java.security.InvalidKeyException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -25,6 +26,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 
 
 
@@ -93,8 +95,22 @@ public class Activity2 extends ActionBarActivity {
 		 		    	 String apiKey="$2y$10$uzbt86lJrhS669Djzkq42uWFC4suyOvGQaL.vPx8irx7VtYo5K3nm";
 		 		    	 String userToken=md5(token+format); 
 		 		    	 
-		 		    	 new HttpAsyncTask(cerere).execute("http://rplus.co/getData/"+email+"/"+userToken+"/"+RequestAppId);
-
+		 		    	 
+		 		    	 
+		 	               BigInteger p=new BigInteger(128,90,new Random());
+		 	               BigInteger g=new BigInteger(128,90,new Random());
+		 	               BigInteger a=new BigInteger(128,new Random());
+		 	               BigInteger A=g.modPow(a,p);
+		 	               
+		 	               
+		 	               BigInteger[] bigs= new BigInteger[4];
+		 	               bigs[0]=p;
+		 	               bigs[1]=g;
+		 	               bigs[2]=a;
+		 	               
+		 		    	 
+		 		    	// new HttpAsyncTask(cerere).execute("http://rplus.co/getData/"+email+"/"+userToken+"/"+RequestAppId);
+		 		    	new HttpAsyncTask(cerere,bigs).execute("http://rplus.co/getData/"+email+"/"+userToken+"/"+RequestAppId+"/"+p.toString()+"/"+g.toString()+"/"+A.toString());
 		 		    	 }
 		 		    	 
 	 	/*	    	 
@@ -122,13 +138,17 @@ public class Activity2 extends ActionBarActivity {
 	    private class HttpAsyncTask extends AsyncTask<String, Void, String> {
 	    	
 	    	private Intent i;
+	    	BigInteger a;
+	    	BigInteger p;
+	    	BigInteger g;
 	    	
 	    	
-	    	
-	    	public HttpAsyncTask(Intent intent)
+	    	public HttpAsyncTask(Intent intent, BigInteger[] bigs)
 	    	{	
 	    	this.i=intent;
-
+    		this.p=bigs[0];
+    		this.g=bigs[1];
+    		this.a=bigs[2];
 	    	}
 	    	
 	    	
@@ -153,7 +173,14 @@ public class Activity2 extends ActionBarActivity {
 	        	 i.putExtra("valid_app", true);
 		    	 i.putExtra("nume", "Raspuns");
 		    	 try {
-					i.putExtra("Rplus_token", decripteaza(result));
+		    		   JSONObject raspuns=new JSONObject(result);
+	        			BigInteger B=new BigInteger(raspuns.getString("B"));
+	        			//Calculez cheia de sesiune
+	        			BigInteger s1=B.modPow(a, p);	 
+		    		 
+		    		 
+		    		 
+					i.putExtra("Rplus_token",decripteaza(raspuns.getString("rezultat"),s1));
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -167,12 +194,13 @@ public class Activity2 extends ActionBarActivity {
 	    
 	    }
 	    
-	    public static String decripteaza(String in) throws Exception
+	    public static String decripteaza(String in,BigInteger s) throws Exception
 	    {
 	    
 	    byte[] data = Base64.decode(in, Base64.DEFAULT);
 	    String ivec="1234567812345678";
-	    String key="1234567812345678";
+	    //String key=md5("1234567812345678");
+	    String key=md5(s.toString());
 	    SecretKeySpec cheie = new SecretKeySpec(key.getBytes(), "AES");
 	    IvParameterSpec iv= new IvParameterSpec(ivec.getBytes());
 	    String text="";
