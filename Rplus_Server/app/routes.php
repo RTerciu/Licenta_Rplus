@@ -64,7 +64,7 @@ return $users;
 
 });
 //ruta de primire de date odata ce avem un utilizator autentificat pe android
-Route::get('getData/{userEmail}/{userToken}/{apiKey}','UsersController@GetData');
+Route::get('getData/{userEmail}/{userToken}/{apiKey}/{p}/{g}/{A}','UsersController@GetData');
 //ruta de logare a utilizatorului pe telefon
 Route::get('checkUser/{userEmail}/{userToken}','UsersController@CheckUser');
 Route::get('checkApp/{appKey}','AppsController@CheckAppKey');

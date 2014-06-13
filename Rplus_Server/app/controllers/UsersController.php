@@ -90,15 +90,26 @@ class UsersController extends BaseController {
 	}
 
 	
-	public function GetData($userEmail,$userToken,$apiKey)
+	public function GetData($userEmail,$userToken,$apiKey,$p,$g,$A)
 	{
 	
-	
-    //$source = 'dhkajsdkashdkashdkah!';
+	//p este modulul primit de la aplicatia mobila
+	$modulus=gmp_init($p);
+	//g este baza la care se ridica toate chestiile
+	$exponent=gmp_init($g);
+	//Alice este cheia publica primita 
+	$Alice=gmp_init($A);
+	//b este secretul random generat aici 
+	$b=gmp_nextprime(gmp_random());
+	//Bob este cheia de aici public ce o sa o trimitem
+	$Bob=gmp_powm($g,$b,$modulus);
+	$pass=md5(gmp_strval(gmp_powm($A,$b,$modulus)));
+ 
+ 
 
-    $iv = "1234567812345678";
-    $pass = '1234567812345678';
-    $method = 'aes-128-cbc';
+	$iv = "1234567812345678";
+    //$pass = md5("1234567812345678");
+    $method = 'aes-256-cbc';
 	
 	
 	
@@ -106,14 +117,14 @@ class UsersController extends BaseController {
 	//verificam ca userul exista
 	if($user==null)
 		{$x=json_encode(array('eroare'=>'Userul nu exista!'));
-				 return base64_encode(openssl_encrypt($x, $method, $pass, true, $iv));
+				 return  json_encode(array('B'=>gmp_strval($Bob),'rezultat'=>base64_encode(openssl_encrypt($x, $method, $pass, true, $iv))));
 		}
 	//Verificam ca aplicatia sa fie aprobata si existenta
 	$app=Application::where('appKey',$apiKey)->where('approved',true)->first();
 	
 	if($app==null)
 		{$x=json_encode(array('eroare'=>'Aplicatia nu exista sau nu este autorizata sa primeasca date!'));
-		 return base64_encode(openssl_encrypt($x, $method, $pass, true, $iv));
+		 return  json_encode(array('B'=>gmp_strval($Bob),'rezultat'=>base64_encode(openssl_encrypt($x, $method, $pass, true, $iv))));
 		}
 	$data=Carbon::now();
 	
@@ -123,12 +134,19 @@ class UsersController extends BaseController {
 	else 
 		$ziua=$data->day;
 	
+	
+	if($data->hour<10)
+		$ora='0'.$data->hour;
+	else 
+		$ora=$data->hour ;
+	
+	
 	if($data->month<10)
 		$luna='0'.$data->month;
 	else 
 		$luna=$data->month;
 	//construim token-ul dependent de timp baza pe token-ul initial construit la signup
-	$token_string=$user->initialToken.$data->year.$luna.$ziua.$data->hour;
+	$token_string=$user->initialToken.$data->year.$luna.$ziua.$ora;
 	
 	//return $token_string.' si primit '.$userToken;
 	//Token de testat pentru radurt25@gmail.com 
@@ -136,7 +154,7 @@ class UsersController extends BaseController {
 	//Daca token-ul nu este egal cu cel primit de la aplicatie , atunci returnam eroare
 	if($userToken!==md5($token_string))
 		{$x=json_encode(array('eroare'=>'Nu esti autorizat sa primesti aceste date sau a intervenit o eroare'));
-			 return base64_encode(openssl_encrypt($x, $method, $pass, true, $iv));
+			 return  json_encode(array('B'=>gmp_strval($Bob),'rezultat'=>base64_encode(openssl_encrypt($x, $method, $pass, true, $iv))));
 		}
 	$userAppNr=UserApp::where('userID',$user->_id)->where('appID',$app->_id)->count();
 	if(!$userAppNr)
@@ -149,7 +167,7 @@ class UsersController extends BaseController {
 	$userapp->appName=$app->nume;
 	$userapp->save();
 	
-	return base64_encode(openssl_encrypt($user, $method, $pass, true, $iv));
+	return json_encode(array('B'=>gmp_strval($Bob),'rezultat'=>base64_encode(openssl_encrypt($user, $method, $pass, true, $iv))));
 	
 	}
 	
