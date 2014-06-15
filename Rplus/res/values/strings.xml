@@ -11,6 +11,9 @@
     <string name="text_button">Login Normal</string>
     <string name="sau">SAU</string>
     <color name="Main_background">#3BA067</color>
-
+	<color name="alb">#FFFFFF</color>
+	<string name="date_profil">Profilul tau</string>
+	<string name="nume_profil">Numele Tau</string>
+	<string name="content_description_poza">Poza de profil</string>
 
 </resources>

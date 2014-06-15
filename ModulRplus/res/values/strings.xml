@@ -8,7 +8,7 @@
     
 	<string name="crypt_button">Verifica Datele!</string>
     <string name="crypt_text"> </string>
-    <string name="rezultat_httpGet">Rezultat HTTP Get</string>
+    <string name="rezultat_httpGet"> </string>
     <string name="conectat">Conectat la internet?</string>
     <string name="buton_login">RplusLogin</string>
     <string name="remove_accounts">StergeDateAnterioare</string>
@@ -17,4 +17,5 @@
     <color android:id="@+id/color1" name="Alb">#ffffff</color>
     <color android:id="@+id/color1" name="Scris">#00ffff</color>
     <string name="waiting">Va rugam asteptati! Se incarca!</string>
+    <string name="content_description_poza">Poza de profil</string>
 </resources>

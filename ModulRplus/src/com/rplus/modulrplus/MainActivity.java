@@ -23,13 +23,18 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+
+
 import android.support.v7.app.ActionBarActivity;
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.accounts.AccountManagerCallback;
 import android.accounts.AccountManagerFuture;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -43,10 +48,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+@SuppressLint("SimpleDateFormat")
 public class MainActivity extends ActionBarActivity {
 
 	TextView RaspunsJson;
@@ -57,10 +64,7 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         
-        
-        //asculta Intent-urile de tip Rplus venite de la alte aplicatii
-       // AscultaCereri();
-        
+
         //butoanele fac operatiile de adaugare a unui cont
         
         Button button = (Button) findViewById(R.id.button1);
@@ -124,11 +128,10 @@ public class MainActivity extends ActionBarActivity {
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
-            	TextView tv = (TextView) findViewById(R.id.textView1);
             	
             	EditText et1= (EditText) findViewById(R.id.editText1);
             	EditText et2= (EditText) findViewById(R.id.editText2);
-
+            	
               	String myString=et2.getText().toString()+et1.getText().toString();
               	String apiKey="$2y$10$uzbt86lJrhS669Djzkq42uWFC4suyOvGQaL.vPx8irx7VtYo5K3nm";
               	
@@ -138,13 +141,11 @@ public class MainActivity extends ActionBarActivity {
             	String format = new SimpleDateFormat("yyyyMMddHH").format(d);
             	String initialToken=md5(myString);
             	String userToken=md5(initialToken+format);
-            	//tv.setText(initialToken+format+" "+userToken);
             	
             	RaspunsJson = (TextView) findViewById(R.id.textView2);
             	conectat=(TextView)findViewById(R.id.textView3);
-                //tvIsConnected = (TextView) findViewById(R.id.tvIsConnected);
          
-                // check if you are connected or not
+
                 if(isConnected()){
                 	conectat.setBackgroundColor(0xFF00CC00);
                     conectat.setText("Esti Conectat la Internet!");
@@ -156,7 +157,6 @@ public class MainActivity extends ActionBarActivity {
                 }
          
                 // call AsynTask to perform network operation on separate thread
-                //raspunsHttpGet="nimic";
             	ProgressBar progressBar=(ProgressBar)findViewById(R.id.progressBar1);
             	RaspunsJson.setText("");
                //new HttpAsyncTask(progressBar,"2",RaspunsJson).execute("http://rplus.co/checkApp/"+apiKey);
@@ -176,44 +176,26 @@ public class MainActivity extends ActionBarActivity {
                //new HttpAsyncTask(progressBar,"4",RaspunsJson).execute("http://rplus.co/test/"+p.toString()+"/"+g.toString()+"/"+A.toString()+"/"+a.toString());
                new HttpAsyncTask(progressBar,"3",RaspunsJson,bigs).execute("http://rplus.co/getData/"+et1.getText().toString()+"/"+userToken+"/"+apiKey+"/"+p.toString()+"/"+g.toString()+"/"+A.toString());
 
-                
-                
-                //RaspunsJson.setText(raspunsHttpGet);
-            	
-            	
+	
             	
             }
         });
 
     }
     
-    //de verificat ca aplicatia exista
-    public String verificaAplicatie()
-    {
-    	
-    	
-    return "Rplus";	
-    }
-    
+ 
      
     public static String decripteaza(String in,BigInteger s) throws Exception
     {
-    
-    byte[] data = Base64.decode(in, Base64.DEFAULT);
-    String ivec="1234567812345678";
-    //String key=md5("1234567812345678");
-    String key=md5(s.toString());
-    SecretKeySpec cheie = new SecretKeySpec(key.getBytes(), "AES");
-    IvParameterSpec iv= new IvParameterSpec(ivec.getBytes());
-    String text="";
-	//text = new String(data, "UTF-8");
-	Cipher cifru= Cipher.getInstance("AES/CBC/NOPADDING");
-	cifru.init(Cipher.DECRYPT_MODE,cheie,iv);
-	byte[] decriptat=cifru.doFinal(data);
-	return new String(decriptat);
-    
-	
-    
+	    byte[] data = Base64.decode(in, Base64.DEFAULT);
+	    String ivec="1234567812345678";
+	    String key=md5(s.toString());
+	    SecretKeySpec cheie = new SecretKeySpec(key.getBytes(), "AES");
+	    IvParameterSpec iv= new IvParameterSpec(ivec.getBytes());
+		Cipher cifru= Cipher.getInstance("AES/CBC/NOPADDING");
+		cifru.init(Cipher.DECRYPT_MODE,cheie,iv);
+		byte[] decriptat=cifru.doFinal(data);
+		return new String(decriptat);
     }
     
     
@@ -222,16 +204,10 @@ public class MainActivity extends ActionBarActivity {
         String result = "";
         try {
  
-            // create HttpClient
             HttpClient httpclient = new DefaultHttpClient();
- 
-            // make GET request to the given URL
             HttpResponse httpResponse = httpclient.execute(new HttpGet(url));
- 
-            // receive response as inputStream
             inputStream = httpResponse.getEntity().getContent();
- 
-            // convert inputstream to string
+
             if(inputStream != null)
                 result = convertInputStreamToString(inputStream);
             else
@@ -264,6 +240,36 @@ public class MainActivity extends ActionBarActivity {
             else
                 return false;   
     }
+    
+    
+    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+	    ImageView bmImage;
+
+	    public DownloadImageTask(ImageView bmImage) {
+	        this.bmImage = bmImage;
+	    }
+
+	    protected Bitmap doInBackground(String... urls) {
+	        String urldisplay = urls[0];
+	        Bitmap mIcon11 = null;
+	        try {
+	            InputStream in = new java.net.URL(urldisplay).openStream();
+	            mIcon11 = BitmapFactory.decodeStream(in);
+	        } catch (Exception e) {
+	            Log.e("Error", e.getMessage());
+	            e.printStackTrace();
+	        }
+	        return mIcon11;
+	    }
+
+	    protected void onPostExecute(Bitmap result) {
+	        bmImage.setImageBitmap(result);
+	    }
+	}
+    
+    
+    
+    
     private class HttpAsyncTask extends AsyncTask<String, Void, String> {
     	
     	private  ProgressBar pb;
@@ -271,7 +277,6 @@ public class MainActivity extends ActionBarActivity {
     	private Object ob;
     	BigInteger a;
     	BigInteger p;
-    	BigInteger g;
     	public HttpAsyncTask( ProgressBar p , String op , Object o)
     	{	
     	this.pb=p;
@@ -286,7 +291,6 @@ public class MainActivity extends ActionBarActivity {
         	this.codOp=Integer.parseInt(op);
         	this.ob=o;
     		this.p=bigs[0];
-    		this.g=bigs[1];
     		this.a=bigs[2];
     		
     	}
@@ -328,7 +332,6 @@ public class MainActivity extends ActionBarActivity {
         			((TextView) ob).append(result);
         			break;
         	case 3:	
-        		//((TextView) ob).append(result);
         		
         		try {
         			//primesc raspunsul json cu B-ul si 
@@ -336,27 +339,19 @@ public class MainActivity extends ActionBarActivity {
         			BigInteger B=new BigInteger(raspuns.getString("B"));
         			//Calculez cheia de sesiune
         			BigInteger s1=B.modPow(a, p);
-        			/*
-        			 * De scos campul secret din JSON.
-        			 * md5(s1) este egal cu valoarea cu care criptez pe server
-        			 * 
-        			 *
         			
-        			String s2=raspuns.getString("secret");
-        			((TextView) ob).append("\n\n"+md5(s1.toString())+"\n"+s2);
-        			*/
-        			
-        			
-					JSONObject js =new JSONObject(decripteaza(raspuns.getString("rezultat"),s1));
+        			String raspuns_decriptat=decripteaza(raspuns.getString("rezultat"),s1);
+					JSONObject js =new JSONObject(raspuns_decriptat);
 					String output="";
 					JSONArray names=js.names();
 					for(int i=0;i<names.length();i++)
 						output+=names.getString(i)+" : "+js.getString(names.getString(i))+ "\n";
 					
-					
-					
-					
-					
+					if(!checkErrorJson(raspuns_decriptat))
+					{ImageView im= (ImageView)findViewById(R.id.imageView1);
+					String url="http://rplus.co/"+js.getString("avatar");
+					new DownloadImageTask(im).execute(url);
+					}
 					((TextView) ob).append(output);
 				   } catch ( Exception e) {
 					// TODO Auto-generated catch block
@@ -378,8 +373,8 @@ public class MainActivity extends ActionBarActivity {
 	        		
 	        		
 	        		BigInteger p=new BigInteger(strArr[0]);
-	        		BigInteger q=new BigInteger(strArr[1]);
-	        		BigInteger A=new BigInteger(strArr[2]);
+	        		//BigInteger q=new BigInteger(strArr[1]);
+	        		//BigInteger A=new BigInteger(strArr[2]);
 	        		BigInteger B=new BigInteger(strArr[3]);
 	        		BigInteger s=new BigInteger(strArr[4]);
 	        		BigInteger a=new BigInteger(strArr[5]);

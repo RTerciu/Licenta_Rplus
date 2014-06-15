@@ -998,8 +998,8 @@ containing a value of this type.
         public static final int action_menu_divider=0x7f060016;
         public static final int action_menu_presenter=0x7f060017;
         public static final int action_mode_close_button=0x7f060024;
-        public static final int action_settings=0x7f060045;
-        public static final int action_settings2=0x7f060046;
+        public static final int action_settings=0x7f060046;
+        public static final int action_settings2=0x7f060047;
         public static final int activity_chooser_view_content=0x7f060025;
         public static final int always=0x7f06000b;
         public static final int beginning=0x7f060011;
@@ -1023,6 +1023,7 @@ containing a value of this type.
         public static final int icon=0x7f06002a;
         public static final int ifRoom=0x7f06000a;
         public static final int image=0x7f060027;
+        public static final int imageView1=0x7f060045;
         public static final int listMode=0x7f060001;
         public static final int list_item=0x7f060029;
         public static final int middle=0x7f060012;
@@ -1161,6 +1162,7 @@ containing a value of this type.
         public static final int app_name=0x7f0b000d;
         public static final int buton_login=0x7f0b0015;
         public static final int conectat=0x7f0b0014;
+        public static final int content_description_poza=0x7f0b001a;
         public static final int crypt_button=0x7f0b0011;
         public static final int crypt_text=0x7f0b0012;
         public static final int email=0x7f0b0018;

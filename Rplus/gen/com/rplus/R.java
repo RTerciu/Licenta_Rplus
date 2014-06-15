@@ -795,10 +795,11 @@ containing a value of this type.
     }
     public static final class color {
         public static final int Main_background=0x7f070003;
-        public static final int abc_search_url_text_holo=0x7f070004;
+        public static final int abc_search_url_text_holo=0x7f070005;
         public static final int abc_search_url_text_normal=0x7f070000;
         public static final int abc_search_url_text_pressed=0x7f070002;
         public static final int abc_search_url_text_selected=0x7f070001;
+        public static final int alb=0x7f070004;
     }
     public static final class dimen {
         /**  Default height of an action bar. 
@@ -996,7 +997,7 @@ containing a value of this type.
         public static final int action_menu_divider=0x7f050016;
         public static final int action_menu_presenter=0x7f050017;
         public static final int action_mode_close_button=0x7f050024;
-        public static final int action_settings=0x7f050043;
+        public static final int action_settings=0x7f050044;
         public static final int activity_chooser_view_content=0x7f050025;
         public static final int always=0x7f05000b;
         public static final int beginning=0x7f050011;
@@ -1020,6 +1021,7 @@ containing a value of this type.
         public static final int icon=0x7f05002a;
         public static final int ifRoom=0x7f05000a;
         public static final int image=0x7f050027;
+        public static final int imageView1=0x7f050043;
         public static final int listMode=0x7f050001;
         public static final int list_item=0x7f050029;
         public static final int middle=0x7f050012;
@@ -1104,7 +1106,8 @@ containing a value of this type.
         public static final int abc_search_dropdown_item_icons_2line=0x7f030015;
         public static final int abc_search_view=0x7f030016;
         public static final int activity_main=0x7f030017;
-        public static final int support_simple_spinner_dropdown_item=0x7f030018;
+        public static final int profile=0x7f030018;
+        public static final int support_simple_spinner_dropdown_item=0x7f030019;
     }
     public static final class menu {
         public static final int main=0x7f0c0000;
@@ -1153,7 +1156,10 @@ containing a value of this type.
         public static final int action_settings=0x7f0a000f;
         public static final int app_name=0x7f0a000d;
         public static final int buton1=0x7f0a0010;
+        public static final int content_description_poza=0x7f0a0018;
+        public static final int date_profil=0x7f0a0016;
         public static final int hello_world=0x7f0a000e;
+        public static final int nume_profil=0x7f0a0017;
         public static final int sau=0x7f0a0015;
         public static final int text1=0x7f0a0011;
         public static final int text_button=0x7f0a0014;
