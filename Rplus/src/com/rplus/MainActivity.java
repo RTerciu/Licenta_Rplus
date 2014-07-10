@@ -76,8 +76,8 @@ public class MainActivity extends ActionBarActivity {
 
                 String nume=data.getStringExtra("nume");
                 String token=data.getStringExtra("Rplus_token");
-                TextView t1=(TextView) findViewById(R.id.textView2);
-                t1.setText("S-au primit date de autentificare, redirectare la pagina de inregistrare");
+                //TextView t1=(TextView) findViewById(R.id.textView2);
+                //t1.setText("S-au primit date de autentificare, redirectare la pagina de inregistrare");
                 try
             	{
 	                if(!token.isEmpty()&&(!token.equalsIgnoreCase("nu exista token")))	

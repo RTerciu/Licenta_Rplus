@@ -59,10 +59,8 @@ public class Activity2 extends ActionBarActivity {
 	    public void AscultaCereri()
 	    {
 	    	
-	    	
 	        Intent cerere=getIntent();
 	        String actiune=cerere.getAction();
-	       // String tip = cerere.getType();
 	        
 	        if(actiune.equals(Intent.ACTION_SEND)){
 	     	    Toast.makeText(getApplicationContext(), "de la actiunea de send", Toast.LENGTH_SHORT).show();           
@@ -92,43 +90,24 @@ public class Activity2 extends ActionBarActivity {
 		 		    	 
 		 		    	 Date d=new Date();
 		 		    	 String format = new SimpleDateFormat("yyyyMMddHH").format(d);
-		 		    	 String apiKey="$2y$10$uzbt86lJrhS669Djzkq42uWFC4suyOvGQaL.vPx8irx7VtYo5K3nm";
+		 		    	// String apiKey="$2y$10$uzbt86lJrhS669Djzkq42uWFC4suyOvGQaL.vPx8irx7VtYo5K3nm";
 		 		    	 String userToken=md5(token+format); 
 		 		    	 
-		 		    	 
-		 		    	 
+ 
 		 	               BigInteger p=new BigInteger(128,90,new Random());
 		 	               BigInteger g=new BigInteger(128,90,new Random());
 		 	               BigInteger a=new BigInteger(128,new Random());
 		 	               BigInteger A=g.modPow(a,p);
-		 	               
-		 	               
+		
 		 	               BigInteger[] bigs= new BigInteger[4];
 		 	               bigs[0]=p;
 		 	               bigs[1]=g;
 		 	               bigs[2]=a;
 		 	               
-		 		    	 
-		 		    	// new HttpAsyncTask(cerere).execute("http://rplus.co/getData/"+email+"/"+userToken+"/"+RequestAppId);
-		 		    	new HttpAsyncTask(cerere,bigs).execute("http://rplus.co/getData/"+email+"/"+userToken+"/"+RequestAppId+"/"+p.toString()+"/"+g.toString()+"/"+A.toString());
+		 		    new HttpAsyncTask(cerere,bigs).execute("http://rplus.co/getData/"+email+"/"+userToken+"/"+RequestAppId+"/"+p.toString()+"/"+g.toString()+"/"+A.toString());
 		 		    	 }
 		 		    	 
-	 	/*	    	 
-	     	   		
-	     	   		} 
-	     	   		else 
-	     	   		{
-	     	   			//Toast.makeText(getApplicationContext(), RequestAppId, Toast.LENGTH_SHORT).show();
-	     	   		
-	     	   		cerere.putExtra("valid_app",false);
-	     	   		cerere.putExtra("nume", "Nu sunteti autorizat!");
-	 		    	cerere.putExtra("Rplus_token", "Nu sunteti autorizat!");
-	 		    	
-	 		    	setResult(Activity.RESULT_OK, cerere);
-	 		    	finish();	
-	 		    	
-	     	   		}
-	    */ 	   		
+	   		
 	 		       }	
 	    	
 	    }
